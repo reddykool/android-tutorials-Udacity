@@ -1,0 +1,74 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Quiz</string>
+    <string name="good_luck">Good Luck!</string>
+    <string name="initial_note">NOTE: \n1. Questions appear here…\n2. Select answer(s) from checkbox… \n3.Click the START button when you are ready…</string>
+    <string name="choose_answers">Pls choose your answer(s)</string>
+    <string name="option_a">Option A</string>
+    <string name="option_b">Option B</string>
+    <string name="option_c">Option C</string>
+    <string name="option_d">Option D</string>
+    <string name="start">Start</string>
+    <string name="results_max_score">Maximum Score: <xliff:g id="maxScore" example="100">%d</xliff:g></string>
+    <string name="results_actual_score">Your Score: <xliff:g id="actualScore" example="100">%d</xliff:g></string>
+    <string name="total_questions">Total Questions: <xliff:g id="totalQuestions" example="10">%d</xliff:g></string>
+    <string name="correct_answers">Correct Answers: <xliff:g id="correctAnswers" example="10">%d</xliff:g></string>
+    <string name="reset">Reset</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="toast_end_quiz">End of Quiz!</string>
+    <string name="selected_options">Selected options: <xliff:g id="selectedOptions" example="a-b-c-d">%s</xliff:g>"</string>
+    <string name="select_options">Please select one or more options</string>
+
+    <string name="question_1">Android is licensed under which open source licensing license?</string>
+    <string name="question_2">Although most people’s first thought when they think of Android is Google, Android is not actually owned by Google. Who owns the Android platform?</string>
+    <string name="question_3">As an Android programmer, what version of Android should you use as your minimum development target?</string>
+    <string name="question_4">What was the first phone released that ran the Android OS?</string>
+    <string name="question_5">What year was the Open Handset Alliance announced?</string>
+    <string name="question_6">What part of the Android platform is open source?</string>
+    <string name="question_7">When did Google purchase Android?</string>
+    <string name="question_8">Android releases since 1.5 have been given nicknames derived how?</string>
+    <string name="question_9">Which among these are NOT a part of Android’s native libraries?</string>
+    <string name="question_10">Which one is not a nickname of a version of Android?</string>
+
+    <string name="question_1_option_1">Gnu’s GPL</string>
+    <string name="question_1_option_2">Apache/MIT</string>
+    <string name="question_1_option_3">OSS</string>
+    <string name="question_1_option_4">Sourceforge</string>
+    <string name="question_2_option_1">Oracle Technology</string>
+    <string name="question_2_option_2">Dalvik</string>
+    <string name="question_2_option_3">Open Handset Alliance</string>
+    <string name="question_2_option_4">Android is owned by Google</string>
+    <string name="question_3_option_1">Versions 1.6 or 2.0</string>
+    <string name="question_3_option_2">Versions 1.0 or 1.1</string>
+    <string name="question_3_option_3">Versions 1.2 or 1.3</string>
+    <string name="question_3_option_4">Versions 2.3 or 3.0</string>
+    <string name="question_4_option_1">Google gPhone</string>
+    <string name="question_4_option_2">T-Mobile G1</string>
+    <string name="question_4_option_3">Motorola Droid</string>
+    <string name="question_4_option_4">HTC Hero</string>
+    <string name="question_5_option_1">2005</string>
+    <string name="question_5_option_2">2006</string>
+    <string name="question_5_option_3">2007</string>
+    <string name="question_5_option_4">2008</string>
+    <string name="question_6_option_1">low-level Linux modules</string>
+    <string name="question_6_option_2">native libraries</string>
+    <string name="question_6_option_3">application framework</string>
+    <string name="question_6_option_4">complete applications</string>
+    <string name="question_7_option_1">2007</string>
+    <string name="question_7_option_2">2005</string>
+    <string name="question_7_option_3">2008</string>
+    <string name="question_7_option_4">2010</string>
+    <string name="question_8_option_1">Strange animals</string>
+    <string name="question_8_option_2">Desserts</string>
+    <string name="question_8_option_3">American States</string>
+    <string name="question_8_option_4">Chocolates</string>
+    <string name="question_9_option_1">Webkit</string>
+    <string name="question_9_option_2">Dalvik</string>
+    <string name="question_9_option_3">OpenGL</string>
+    <string name="question_9_option_4">SQLite</string>
+    <string name="question_10_option_1">Cupcake</string>
+    <string name="question_10_option_2">Gingerbread</string>
+    <string name="question_10_option_3">Honeycomb</string>
+    <string name="question_10_option_4">Muffin</string>
+
+</resources>

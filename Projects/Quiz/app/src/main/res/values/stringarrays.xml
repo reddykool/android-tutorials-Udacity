@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="questions_array">
+        <item>Android is licensed under which open source licensing license?</item>
+        <item>Although most people’s first thought when they think of Android is Google, Android is not actually owned by Google. Who owns the Android platform?</item>
+        <item>As an Android programmer, what version of Android should you use as your minimum development target?</item>
+        <item>What was the first phone released that ran the Android OS?</item>
+        <item>What year was the Open Handset Alliance announced?</item>
+        <item>What part of the Android platform is open source?</item>
+        <item>When did Google purchase Android?</item>
+        <item>Android releases since 1.5 have been given nicknames derived how?</item>
+        <item>Which among these are NOT a part of Android’s native libraries?</item>
+        <item>Which one is not a nickname of a version of Android?</item>
+    </string-array>
+
+    <string-array name="options_array">
+        <item>Gnu’s GPL</item>
+        <item>Apache/MIT</item>
+        <item>OSS</item>
+        <item>Sourceforge</item>
+        <item>Oracle Technology</item>
+        <item>Dalvik</item>
+        <item>Open Handset Alliance</item>
+        <item>Android is owned by Google</item>
+        <item>Versions 1.6 or 2.0</item>
+        <item>Versions 1.0 or 1.1</item>
+        <item>Versions 1.2 or 1.3</item>
+        <item>Versions 2.3 or 3.0</item>
+        <item>Google gPhone</item>
+        <item>T-Mobile G1</item>
+        <item>Motorola Droid</item>
+        <item>HTC Hero</item>
+        <item>2005</item>
+        <item>2006</item>
+        <item>2007</item>
+        <item>2008</item>
+        <item>low-level Linux modules</item>
+        <item>native libraries</item>
+        <item>application framework</item>
+        <item>complete applications</item>
+        <item>2007</item>
+        <item>2005</item>
+        <item>2008</item>
+        <item>2010</item>
+        <item>Strange animals</item>
+        <item>Desserts</item>
+        <item>American States</item>
+        <item>Chocolates</item>
+        <item>Webkit</item>
+        <item>Dalvik</item>
+        <item>OpenGL</item>
+        <item>SQLite</item>
+        <item>Cupcake</item>
+        <item>Gingerbread</item>
+        <item>Honeycomb</item>
+        <item>Muffin</item>
+    </string-array>
+
+</resources>

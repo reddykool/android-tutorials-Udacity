@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>@string/category_numbers</item>
+        <item>@string/category_family</item>
+        <item>@string/category_colors</item>
+        <item>@string/category_phrases</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,30 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Just Java</string>
+    <string name="user_name">Name</string>
+    <string name="hint_name">Your name?</string>
+    <string name="toppings">Toppings</string>
+    <string name="whipped_cream">Whipped Cream</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="quantity">Quantity</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="checkout">Checkout</string>
+    <string name="order">Order</string>
+    <string name="reset">Reset</string>
+    <string name="thank_you">~~Thank You!~~</string>
+    <string name="order_summary_name">Name     : <xliff:g id="name" example="Any">%s</xliff:g> </string>
+    <string name="order_summary_quantity">Quantity     : <xliff:g id="quantity" example="10">%d</xliff:g></string>
+    <string name="order_summary_coffee_price">  + Coffee(<xliff:g id="coffee_price" example ="$10">%s</xliff:g> each)</string>
+    <string name="order_summary_wc_price">  + Whipped Cream(<xliff:g id="wc_price" example="$1">%s</xliff:g> each)</string>
+    <string name="order_summary_choc_price">  + Chocolate(<xliff:g id="choc_price" example="2">%s</xliff:g> each)</string>
+    <string name="order_summary_total">TOTAL PRICE        : <xliff:g id="total" example="$50">%s</xliff:g></string>
+    <string name="maxLimit">Maximum 100 cups per order :)</string>
+    <string name="minOrder">Minimum 1 cup per order :)</string>
+    <string name="quantity_num">0</string>
+    <string name="toast_select_quantity">Please select correct QUANTITY to place order...</string>
+    <string name="toast_enter_name">Please enter your NAME to place order...</string>
+    <string name="toast_checkout">Please CHECKOUT order to process further...</string>
+    <string name="mail_subject_text">Coffee Order! for - </string>
+    <string name="mail_success_msg">Processing Order!</string>
+    <string name="mail_fail_msg">Order Failed: No email Application to send order !</string>
+
+</resources>

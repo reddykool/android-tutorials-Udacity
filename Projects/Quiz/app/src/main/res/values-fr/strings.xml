@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Quiz</string>
+    <string name="choose_answers">Pls choisissez votre (vos) réponse (s)</string>
+    <string name="done">Terminé</string>
+    <string name="next">Prochain</string>
+    <string name="good_luck">Bonne chance</string>
+    <string name="initial_note">REMARQUE: \n1. Les questions apparaissent ici … \n2. Sélectionnez la (les) réponse (s) à partir de la case à cocher … \n3.Cliquez sur le bouton START (Démarrer) lorsque vous êtes prêt …</string>
+    <string name="option_a">Option A</string>
+    <string name="option_b">Option B</string>
+    <string name="option_c">Option C</string>
+    <string name="option_d">Option D</string>
+    <string name="reset">Réinitialiser</string>
+    <string name="select_options">Veuillez choisir une ou plusieurs options</string>
+    <string name="start">Démarrer</string>
+    <string name="toast_end_quiz">Fin du quiz!</string>
+    <string name="results_max_score">Score maximum: <xliff:g id="maxScore" example="100">%d</xliff:g></string>
+    <string name="results_actual_score">Ton score: <xliff:g id="actualScore" example="100">%d</xliff:g></string>
+    <string name="total_questions">Questions au total: <xliff:g id="totalQuestions" example="10">%d</xliff:g></string>
+    <string name="correct_answers">Bonnes réponses: <xliff:g id="correctAnswers" example="10">%d</xliff:g></string>
+    <string name="selected_options">Options sélectionnées: <xliff:g id="selectedOptions" example="a-b-c-d">%s</xliff:g>"</string>
+</resources>

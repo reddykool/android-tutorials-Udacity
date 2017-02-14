@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for single list item -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/tan_background"
+    android:minHeight="@dimen/list_item_height">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/list_item_width"
+        android:layout_height="@dimen/list_item_height" />
+
+    <LinearLayout
+        android:id="@+id/text_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_toRightOf="@+id/imageView"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/list_item_horizontal_padding">
+
+        <TextView
+            android:id="@+id/first_text"
+            style="@style/ListItemTextStyle"
+            android:gravity="bottom"
+            android:textStyle="bold"
+            tools:text="Lutti" />
+
+        <TextView
+            android:id="@+id/second_text"
+            style="@style/ListItemTextStyle"
+            tools:text="One" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_play_circle_outline_white_24dp" />
+
+</RelativeLayout>

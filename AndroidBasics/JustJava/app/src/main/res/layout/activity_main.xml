@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.reddyz.justjava.MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/coffee42">
+
+        <TextView
+            style="@style/HeaderTextStyle"
+            android:text="@string/user_name" />
+
+        <EditText
+            android:id="@+id/name_input_text"
+            android:hint="@string/hint_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"/>
+
+        <TextView
+            style="@style/HeaderTextStyle"
+            android:text="@string/toppings" />
+
+        <CheckBox
+            style="@style/CheckboxStyle"
+            android:id="@+id/WhipCream_checkbox"
+            android:text="@string/whipped_cream" />
+
+        <CheckBox
+            style="@style/CheckboxStyle"
+            android:id="@+id/chocolate_checkbox"
+            android:text="@string/chocolate"/>
+
+        <TextView
+            style="@style/HeaderTextStyle"
+            android:text="@string/quantity"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <Button
+                android:layout_width="46dp"
+                android:layout_height="wrap_content"
+                android:onClick="decrement"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/quantity_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/quantity_num"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:layout_width="46dp"
+                android:layout_height="wrap_content"
+                android:onClick="increment"
+                android:text="+"/>
+
+        </LinearLayout>
+
+        <View style="@style/HzLineView"/>
+
+        <TextView
+            style="@style/HeaderTextStyle"
+            android:text="@string/order_summary"
+            android:layout_gravity="center"/>
+
+        <View style="@style/HzLineView"/>
+
+        <TextView
+            android:id="@+id/order_summary_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                style="@style/ButtonStyle"
+                android:background="#D7CCC8"
+                android:onClick="processOrder"
+                android:text="@string/checkout"
+                android:layout_weight="1"/>
+
+            <Button
+                style="@style/ButtonStyle"
+                android:background="#8D6E63"
+                android:onClick="mailOrder"
+                android:text="@string/order"
+                android:layout_weight="1"/>
+
+            <Button
+                style="@style/ButtonStyle"
+                android:background="#4E342E"
+                android:onClick="resetOrder"
+                android:text="@string/reset"
+                android:textColor="@android:color/darker_gray"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

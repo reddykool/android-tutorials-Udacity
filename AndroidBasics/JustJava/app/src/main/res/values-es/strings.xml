@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Sólo Java</string>
+    <string name="checkout">Revisa</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="hint_name">¿Tu nombre?</string>
+    <string name="order">Orden</string>
+    <string name="order_summary">Resumen de pedido</string>
+    <string name="quantity">Cantidad</string>
+    <string name="reset">Reiniciar</string>
+    <string name="toppings">Coberturas</string>
+    <string name="user_name">Nombre</string>
+    <string name="whipped_cream">Crema batida</string>
+    <string name="thank_you">~~Gracias!~~</string>
+    <string name="order_summary_name">Nombre : <xliff:g id="name" example="Any">%s</xliff:g></string>
+    <string name="order_summary_quantity">Cantidad     : <xliff:g id="quantity" example="10">%d</xliff:g></string>
+    <string name="order_summary_coffee_price">  + Café(<xliff:g id="coffee_price" example ="$10">%s</xliff:g> cada uno)</string>
+    <string name="order_summary_wc_price">  + Crema batida(<xliff:g id="wc_price" example="$1">%s</xliff:g> cada uno)</string>
+    <string name="order_summary_choc_price">  + Chocolate(<xliff:g id="choc_price" example="$2">%s</xliff:g> cada uno)</string>
+    <string name="order_summary_total">PRECIO TOTAL      : <xliff:g id="total" example="$50">%s</xliff:g></string>
+    <string name="maxLimit">Máximo 100 tazas por pedido :)</string>
+    <string name="minOrder">Mínimo 1 taza por pedido :)</string>
+    <string name="quantity_num">0</string>
+    <string name="toast_select_quantity">Seleccione la cantidad correcta para realizar el pedido ...</string>
+    <string name="toast_enter_name">Por favor, introduzca su NOMBRE para hacer el pedido ...</string>
+    <string name="toast_checkout">Por favor, el pedido para procesar más ...</string>
+    <string name="mail_subject_text">¡Orden del café! para -</string>
+    <string name="mail_success_msg">¡Orden de procesamiento!</string>
+    <string name="mail_fail_msg">Orden fallada: ¡Ninguna aplicación del email para enviar orden!</string>
+
+
+</resources>
