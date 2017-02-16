@@ -9,8 +9,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -65,7 +74,7 @@ public final class QueryUtils {
      * Return a list of {@link EarthquakeData} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<EarthquakeData> extractEarthquakes() {
+    public static ArrayList<EarthquakeData> extractEarthquakes(String jsonResponse) {
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<EarthquakeData> earthquakes = new ArrayList<>();
@@ -74,10 +83,13 @@ public final class QueryUtils {
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
-            // TODO: Parse the response given by the SAMPLE_JSON_RESPONSE string and
+            // Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
 
-            JSONObject quakeObject = new JSONObject(SAMPLE_JSON_RESPONSE_test);
+            if(jsonResponse.isEmpty()) {
+                jsonResponse = SAMPLE_JSON_RESPONSE_test;
+            }
+            JSONObject quakeObject = new JSONObject(jsonResponse);
             JSONArray featuresArray = quakeObject.getJSONArray("features");
 
             for(int i=0; i< featuresArray.length(); i++) {
@@ -103,4 +115,98 @@ public final class QueryUtils {
         return earthquakes;
     }
 
+    /**
+     * Query the USGS dataset and return an {@link List<EarthquakeData>} object to represent a single earthquake.
+     */
+    public static List<EarthquakeData> fetchEarthquakeData(String urlString) {
+        //create url object
+        URL url = createUrl(urlString);
+
+        //request for relevant earthquake info(json format) through the url info.
+        String jsonResponseString = makeHttpRequest(url);
+
+        //Parse Json formatted response and extract relevant info into List of EarthquakeData objects.
+        List<EarthquakeData> earthquakesDataList =  extractEarthquakes(jsonResponseString);
+
+        return earthquakesDataList;
+    }
+
+    /**
+     * Returns new URL object from the given string URL.
+     */
+    private static URL createUrl(String urlString) {
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "createUrl : MalformedURLException");
+        }
+        return url;
+    }
+
+    /**
+     * Make an HTTP request to the given URL and return a String as the response.
+     */
+    private static String makeHttpRequest(URL url) {
+        String jsonResponseString = "";
+        if(url == null) {
+            return jsonResponseString;
+        }
+
+        HttpURLConnection urlConnection = null;
+        InputStream inStream = null;
+
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+            // If the request was successful (response code 200),
+            // then read the input stream and parse the response.
+            if( urlConnection.getResponseCode() == 200)
+            {
+                inStream = urlConnection.getInputStream();
+                jsonResponseString = readFromStream(inStream);
+            }else {
+                Log.e(LOG_TAG, "makeHttpRequest : urlConnection Response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "makeHttpRequest : IOException");
+        } finally {
+            if(urlConnection != null){
+                urlConnection.disconnect();
+            }
+            if(inStream != null){
+                try {
+                    inStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(LOG_TAG, "InputStream Close : IOException");
+                }
+            }
+        }
+
+        return jsonResponseString;
+    }
+
+    /**
+     * Convert the {@link InputStream} into a String which contains the
+     * whole JSON response from the server.
+     */
+    private static String readFromStream(InputStream inStream) throws IOException {
+        StringBuilder output = new StringBuilder();
+        if(inStream != null) {
+            InputStreamReader streamReader = new InputStreamReader(inStream, Charset.forName("UTF-8"));
+            BufferedReader reader = new BufferedReader(streamReader);
+            String line = reader.readLine();
+            while (line != null) {
+                output.append(line);
+                line = reader.readLine();
+            }
+        }
+        return output.toString();
+    }
 }
