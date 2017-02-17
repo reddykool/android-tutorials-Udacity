@@ -16,9 +16,12 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,16 +47,21 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private EarthquakeAdapter mAdapter;
 
     private TextView mEmptyStateTextView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Find a reference to the {@link ListView} in the layout
+        //Find a reference to the {@link ProgressBar} in the layout
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        //Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        //FInd empty state text view and set to listView for empty state usage
+        //Find empty state text view and set to listView for empty state usage
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_text_view);
         earthquakeListView.setEmptyView(mEmptyStateTextView);
 
@@ -77,11 +86,21 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        Log.i(LOG_TAG, "onCreate: Init loader..");
-        getLoaderManager().initLoader(QUAKE_LOADER_ID, null, this);
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected) {
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            Log.i(LOG_TAG, "onCreate: Init loader..");
+            getLoaderManager().initLoader(QUAKE_LOADER_ID, null, this);
+        }
+        else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet_text);
+        }
     }
 
     @Override
@@ -94,8 +113,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<List<EarthquakeData>> loader, List<EarthquakeData> data) {
         Log.i(LOG_TAG, "onLoadFinished ..");
+        //Hide the progress bar
+        mProgressBar.setVisibility(View.GONE);
+
         // Set empty state text to display "No earthquakes found."
         mEmptyStateTextView.setText(R.string.empty_state_text);
+
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
 

@@ -76,6 +76,9 @@ public final class QueryUtils {
      */
     public static ArrayList<EarthquakeData> extractEarthquakes(String jsonResponse) {
 
+        if(jsonResponse.isEmpty()) {
+            return null;
+        }
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<EarthquakeData> earthquakes = new ArrayList<>();
 
@@ -86,9 +89,6 @@ public final class QueryUtils {
             // Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
 
-            if(jsonResponse.isEmpty()) {
-                jsonResponse = SAMPLE_JSON_RESPONSE_test;
-            }
             JSONObject quakeObject = new JSONObject(jsonResponse);
             JSONArray featuresArray = quakeObject.getJSONArray("features");
 
@@ -99,7 +99,7 @@ public final class QueryUtils {
                 long timeInMS = properties.getLong("time");
                 String url = properties.getString("url");
 
-                Log.i(LOG_TAG, "Mag:" + magnitude + " ,Place:" + place + " ,Time:" + timeInMS + " ,Url:" + url);
+                //Log.i(LOG_TAG, "Mag:" + magnitude + " ,Place:" + place + " ,Time:" + timeInMS + " ,Url:" + url);
 
                 EarthquakeData info = new EarthquakeData(magnitude, place, timeInMS, url);
                 earthquakes.add(info);
@@ -120,6 +120,15 @@ public final class QueryUtils {
      */
     public static List<EarthquakeData> fetchEarthquakeData(String urlString) {
         Log.i(LOG_TAG, "fetchEarthquakeData() ..");
+
+        // Enable below try/catch code : To text if progress bar works correctly
+        /*
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
 
         //create url object
         URL url = createUrl(urlString);
