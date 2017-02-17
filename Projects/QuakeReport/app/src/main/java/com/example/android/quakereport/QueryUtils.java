@@ -119,6 +119,8 @@ public final class QueryUtils {
      * Query the USGS dataset and return an {@link List<EarthquakeData>} object to represent a single earthquake.
      */
     public static List<EarthquakeData> fetchEarthquakeData(String urlString) {
+        Log.i(LOG_TAG, "fetchEarthquakeData() ..");
+
         //create url object
         URL url = createUrl(urlString);
 
