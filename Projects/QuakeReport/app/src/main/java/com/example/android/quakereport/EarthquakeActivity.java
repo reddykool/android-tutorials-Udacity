@@ -19,28 +19,36 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<EarthquakeData>>{
 
-    private static final String QUAKE_REQUEST_URL =
+    private static final String USGS_REQUEST_URL_FULL =
             "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=5.5&limit=20";
+    private static final String USGS_REQUEST_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query";
+
     private static final int QUAKE_LOADER_ID = 1;
 
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
@@ -107,7 +115,29 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public Loader<List<EarthquakeData>> onCreateLoader(int id, Bundle args) {
         //create new loader object extended from asyncloader class.
         Log.i(LOG_TAG, "onCreateLoader ..");
-        return new EarthquakeLoader(EarthquakeActivity.this, QUAKE_REQUEST_URL);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPrefs.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+
+        String fetchLimit = sharedPrefs.getString(
+                getString(R.string.settings_request_limit_key),
+                getString(R.string.settings_request_limit_default));
+
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", fetchLimit);
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderby", orderBy);
+
+        Log.i(LOG_TAG, "Uri String:" + uriBuilder.toString());
+        return new EarthquakeLoader(EarthquakeActivity.this, uriBuilder.toString());
     }
 
     @Override
@@ -134,5 +164,25 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         Log.i(LOG_TAG, "onLoaderReset ..");
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.menu_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        if(id == R.id.menu_about_us) {
+            Toast.makeText(this, "Udacity cource - Reddyz", Toast.LENGTH_LONG).show();
+        }
+        return false;
     }
 }
