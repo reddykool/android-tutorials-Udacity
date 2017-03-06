@@ -14,6 +14,15 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Common margin value used throughout the app -->
-    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_margin">2dp</dimen>
+
+    <!-- List item padding-->
+    <dimen name="list_item_padding">16dp</dimen>
+
+    <!-- List item Text name size-->
+    <dimen name="list_item_name_textsize">16sp</dimen>
+
+    <!-- List item Text breed size-->
+    <dimen name="list_item_breed_textsize">12sp</dimen>
 </resources>
 

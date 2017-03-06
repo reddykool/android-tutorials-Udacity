@@ -25,4 +25,11 @@
 
     <!-- Primary dark color for the editor -->
     <color name="editorColorPrimaryDark">#394450</color>
+
+    <!-- Dark color for the main text -->
+    <color name="textPrimaryColor">#2B3D4D</color>
+
+    <!-- Light color for the secondary text -->
+    <color name="textSecondaryColor">#AEB6BD</color>
+
 </resources>

@@ -3,20 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/list_item_padding">
 
     <TextView
         android:id="@+id/list_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/list_item_name_textsize"
+        android:textColor="@color/textPrimaryColor"/>
 
     <TextView
         android:id="@+id/list_item_breed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"/>
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/list_item_breed_textsize"
+        android:textColor="@color/textSecondaryColor"/>
 
 </LinearLayout>
