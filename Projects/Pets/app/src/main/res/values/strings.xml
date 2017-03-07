@@ -62,4 +62,10 @@
     <string name="pet_save_failed">Pet save FAILED</string>
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
     <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+    <string name="editor_activity_title_edit_pet">Edit pet</string>
+    <string name="pet_updated">Pet updated</string>
+    <string name="pet_update_failed">Pet update failed</string>
+    <string name="save_alert_dialog_message">Discard your changes and quit Editing?</string>
+    <string name="save_alert_keep_editing">Keep Editing</string>
+    <string name="save_alert_discard">Discard</string>
 </resources>

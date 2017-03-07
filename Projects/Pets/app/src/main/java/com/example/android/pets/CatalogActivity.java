@@ -15,18 +15,25 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,13 +41,17 @@ import android.widget.Toast;
 import com.example.android.pets.data.PetsContract.PetsEntry;
 import com.example.android.pets.data.PetsDbHelper;
 
+import java.net.URI;
+import java.util.zip.Inflater;
+
 /**
  * Displays list of pets that were entered and stored in the app.
  */
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     public static final String LOG_TAG = "CatalogActivity";
-    PetsDbHelper mDbHelper;
-    Cursor mCursor = null;
+    private static final int PETS_LOADER_ID = 1;
+
+    PetsCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,68 +68,45 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
+        // Get the listveiw and set cursor adapter to load the cursor table into listview using
+        // our custom cursor adapter
         ListView displayView = (ListView) findViewById(R.id.list_view_pet);
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         displayView.setEmptyView(emptyView);
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new PetsDbHelper(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
-    }
-
-    /**
-     * Helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
-    private void displayDatabaseInfo() {
-        String []projection = {
-                PetsEntry._ID,
-                PetsEntry.COLUMN_PET_NAME,
-                PetsEntry.COLUMN_PET_BREED,
-                PetsEntry.COLUMN_PET_WEIGHT,
-                PetsEntry.COLUMN_PET_GENDER
-            };
-
-        if(mCursor != null) {
-            mCursor.close();
-        }
-        mCursor = getContentResolver().query(PetsEntry.CONTENT_URI, projection, null, null, null);
-
-        // get the listveiw and set cursor adapter to load the cursor table into listview using
-        // our custom cursor adapter
-        ListView displayView = (ListView) findViewById(R.id.list_view_pet);
-
-        // Initialise cursor adapter with cursor(returned form content resolver above)
-        PetsCursorAdapter cursorAdapter = new PetsCursorAdapter(this, mCursor, false);
-
+        // Initialise cursor adapter with empty cursor. Loader on finished will update with
+        // correct queried cursor data
+        mCursorAdapter = new PetsCursorAdapter(this, null, false);
         //Set this cursor adapter to listview.
-        displayView.setAdapter(cursorAdapter);
+        displayView.setAdapter(mCursorAdapter);
+
+        //Handle click on list item
+        displayView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Uri currentPetUri = ContentUris.withAppendedId(PetsEntry.CONTENT_URI, id);
+                Log.i(LOG_TAG, "On item click: Uri:: " + currentPetUri.toString());
+                Log.i(LOG_TAG, "On item click: Pos:  " + position + " id: " + id);
+                Intent editorIntent = new Intent(CatalogActivity.this, EditorActivity.class);
+                editorIntent.setData(currentPetUri);
+                startActivity(editorIntent);
+            }
+        });
+
+        // Prepare the loader. Either re-connect with an existing one, or start a new one.
+        getSupportLoaderManager().initLoader(PETS_LOADER_ID, null, this);
     }
 
     private void insertPet() {
-
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(PetsEntry.COLUMN_PET_NAME, "Toto new");
-        values.put(PetsEntry.COLUMN_PET_BREED, "Terrier-N");
-        values.put(PetsEntry.COLUMN_PET_GENDER, PetsEntry.GENDER_MALE);
+        values.put(PetsEntry.COLUMN_PET_NAME, "Toftof");
+        values.put(PetsEntry.COLUMN_PET_BREED, "Terrier-Femi");
+        values.put(PetsEntry.COLUMN_PET_GENDER, PetsEntry.GENDER_FEMALE);
         values.put(PetsEntry.COLUMN_PET_WEIGHT, 7);
 
-        // Insert the new row, returning the primary key value of the new row
-        // The first argument for db.insert() is the pets table name.
-        // The second argument provides the name of a column in which the framework
-        // can insert NULL in the event that the ContentValues is empty (if
-        // this is set to "null", then the framework will not insert a row when
-        // there are no values).
-        // The third argument is the ContentValues object containing the info for Toto
-        //long newRowId = db.insert(PetsEntry.TABLE_NAME, null, values);
+        // Insert the new row, returning the uri value of the new row
         Uri newRow = getContentResolver().insert(PetsEntry.CONTENT_URI, values);
         if( newRow == null) {
             Toast.makeText(this, "Pet(Dummy) save FAILED", Toast.LENGTH_SHORT).show();
@@ -143,7 +131,6 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertPet();
-                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -151,5 +138,27 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String [] projection = {PetsEntry._ID, PetsEntry.COLUMN_PET_NAME, PetsEntry.COLUMN_PET_BREED};
+        // Now create and return a CursorLoader that will take care of creating a Cursor through
+        // content resolver/provider help in background thread..
+        return new CursorLoader(this, PetsEntry.CONTENT_URI, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // This is called when the last Cursor provided to onLoadFinished() above is about to be
+        // closed.  We need to make sure we are no longer using it.
+        mCursorAdapter.swapCursor(null);
     }
 }
