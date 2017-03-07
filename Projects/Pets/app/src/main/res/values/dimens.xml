@@ -24,5 +24,6 @@
 
     <!-- List item Text breed size-->
     <dimen name="list_item_breed_textsize">12sp</dimen>
+    <dimen name="activity_padding">16dp</dimen>
 </resources>
 

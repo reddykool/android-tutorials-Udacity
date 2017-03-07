@@ -17,6 +17,7 @@ package com.example.android.pets;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +29,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -98,6 +100,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getSupportLoaderManager().initLoader(PETS_LOADER_ID, null, this);
     }
 
+    // Insert default valued pet into db via contentResolver.
     private void insertPet() {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -114,6 +117,23 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             Toast.makeText(this, "Pet(Dummy) saved", Toast.LENGTH_SHORT).show();
         }
         Log.i(LOG_TAG, " Pet(dummy) saved: Uri:  "+newRow.toString());
+    }
+
+    //Delete all pets in db via content resolver.
+    private void deleteAllPets() {
+        int currentPetsCount = mCursorAdapter.getCount();
+        // Delete all entries. Pass DIR type Uri to Content Resolver.
+        int deletedRows = getContentResolver().delete(PetsEntry.CONTENT_URI, null, null);
+        if(deletedRows == 0) {
+            // If delete all pets failed.
+            Toast.makeText(this, R.string.delete_failed_msg, Toast.LENGTH_SHORT).show();
+        } else if (deletedRows != currentPetsCount) {
+            // If only some entries were deleted.(for some reason)
+            Toast.makeText(this, R.string.deleted_some_pets, Toast.LENGTH_SHORT).show();
+        } else {
+            //If all entries deleted successfully
+            Toast.makeText(this, R.string.delete_all_success_msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -134,10 +154,46 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                // Show delete alert dialog if at least one pet already exists in db,.
+                if(mCursorAdapter.getCount() != 0) {
+                    showDeleteAllConfirmationDialog();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Show confirmation dialog to "delete or cancel" and proceed accordingly
+    private void showDeleteAllConfirmationDialog() {
+        //1. Create a new dialog Builder
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        // 2.1 message to be shown in dialog
+        dialogBuilder.setMessage(R.string.alert_delete_all_msg);
+
+        // 2.2 one of the option button to confirm delete - "Delete" button
+        dialogBuilder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User confirmed "delete all" option. Hence, delete all pets in db.
+                deleteAllPets();
+            }
+        });
+
+        // 2.2 Another option button to cancel delete - "Cancel" button
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User cancelled "Delete all" option. Dismiss dialog and do nothing
+                if(dialogInterface != null)
+                    dialogInterface.dismiss();
+            }
+        });
+
+        // 3. Create Alert dialog and show
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     @Override

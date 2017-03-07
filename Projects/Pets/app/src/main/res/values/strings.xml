@@ -68,4 +68,13 @@
     <string name="save_alert_dialog_message">Discard your changes and quit Editing?</string>
     <string name="save_alert_keep_editing">Keep Editing</string>
     <string name="save_alert_discard">Discard</string>
+    <string name="delete_alert_message">Pet will be deleted</string>
+    <string name="delete_failed_msg">Delete failed</string>
+    <string name="delete_success_msg">Pet deleted</string>
+    <string name="alert_delete_all_msg">Delete ALL pets?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="deleted_some_pets">Some entries were unable to delete</string>
+    <string name="delete_all_success_msg">Deleted all pets</string>
+    <string name="unknwon_breed_msg">Unknown breed</string>
 </resources>

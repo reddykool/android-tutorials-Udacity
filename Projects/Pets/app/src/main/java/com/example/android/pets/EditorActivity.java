@@ -84,17 +84,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mEditItemUri = getIntent().getData();
         if(mEditItemUri == null) {
             //"Add New entry" mode
+            mEditorMode = NEW_MODE;
             Log.i(LOG_TAG, "OnCreate: New pet ");
             setTitle(getString(R.string.editor_activity_title_new_pet));
-            mEditorMode = NEW_MODE;
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            invalidateOptionsMenu();
         } else {
             //"edit existing entry" mode
+            mEditorMode = EDIT_MODE;
             Log.i(LOG_TAG, "OnCreate : Edit pet: Uri:: " + mEditItemUri.toString());
             setTitle(getString(R.string.editor_activity_title_edit_pet));
             // Prepare the loader to fetch the details of this pet item.
             // Framework will either re-connect with an existing loader, or start a new one.
             getSupportLoaderManager().initLoader(EDITOR_LOADER_ID, null, this);
-            mEditorMode = EDIT_MODE;
         }
 
         // Find all relevant views that we will need to read user input from
@@ -238,7 +241,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
-                // Do nothing for now
+                showDeleteConfirmationDialog();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
@@ -267,6 +270,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is called after invalidateOptionsMenu(), so that the
+     * menu can be updated (some menu items can be hidden or made visible).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        //If new entry mode, hide delete menu option
+        if(mEditorMode == NEW_MODE) {
+            //MenuItem menuItem = menu.findItem(R.id.action_delete);
+            //menuItem.setVisible(false);
+            /*    OR   */
+            menu.removeItem(R.id.action_delete);
+        }
+        return true;
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Now create and return a CursorLoader that will take care of creating a Cursor through
@@ -276,6 +296,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if(cursor.getCount() == 0)
+            return;
         // Set the editor fields according to the returned cursor values of particular item.
         cursor.moveToFirst();
         int nameColumnIndex = cursor.getColumnIndex(PetsEntry.COLUMN_PET_NAME);
@@ -346,4 +368,55 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog dialog =  dialogBuilder.create();
         dialog.show();
     }
+
+    // Show confirmation dialog to "delete or cancel" and proceed accordingly
+    private void showDeleteConfirmationDialog() {
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        // 2.1 message to be shown in dialog
+        dialogBuilder.setMessage(R.string.delete_alert_message);
+
+        // 2.2 one of the option button to confirm delete - "Delete" button
+        dialogBuilder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User confirmed the delete. call deletePet() to delete this pet entry
+                deletePet();
+            }
+        });
+
+        // 2.2 one of the option button to cancel delete - "Cancel" button
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //User canceled the delete confirmation. Dismiss dialog and do nothing
+                if(dialogInterface != null)
+                    dialogInterface.dismiss();
+            }
+        });
+
+        // 3. Create Alert dialog and show
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    // Delete this particular pet entry form db
+    private void deletePet() {
+        // Only perform the delete if this is an existing pet.
+        if(mEditorMode != EDIT_MODE) {
+            return;
+        }
+        //mEditItemUri has the pet id in this uri. Pass the same to content resolver to delete single Item
+        int deletedRow = getContentResolver().delete(mEditItemUri, null, null);
+        if(deletedRow == 0) {
+            Toast.makeText(this, R.string.delete_failed_msg, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.delete_success_msg, Toast.LENGTH_SHORT).show();
+        }
+        //finish the activity
+        finish();
+    }
+
 }
